@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Quiz de la Célula</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400&family=Pacifico&family=Montserrat:wght@500&display=swap');
+
+  body { 
+    font-family: 'Roboto', sans-serif; 
+    background-color: #f0f8ff; 
+    text-align: center; 
+    padding: 20px; 
+  }
+
+  h1 { 
+    font-family: 'Pacifico', cursive; 
+    color: #2e8b57; 
+    font-size: 48px; 
+  }
+
+  .question { 
+    font-family: 'Montserrat', sans-serif; 
+    font-size: 22px; 
+    margin: 20px 0; 
+  }
+
+  .options button { 
+    margin: 10px; 
+    padding: 15px 25px; 
+    font-family: 'Roboto', sans-serif; 
+    font-size: 18px; 
+    border-radius: 50px; 
+    border: 2px solid #2e8b57; 
+    background-color: #98fb98; 
+    cursor: pointer; 
+    transition: 0.3s; 
+  }
+
+  .options button:hover { 
+    background-color: #2e8b57; 
+    color: white; 
+  }
+
+  #next { 
+    margin-top: 20px; 
+    padding: 10px 30px; 
+    font-size: 18px; 
+    border-radius: 25px; 
+    background-color: #20b2aa; 
+    color: white; 
+    border: none; 
+    cursor: pointer; 
+  }
+
+  #next:hover { 
+    background-color: #008b8b; 
+  }
+
+  #result { 
+    font-size: 28px; 
+    margin-top: 30px; 
+    color: green; 
+    font-family: 'Montserrat', sans-serif; 
+  }
+</style>
+</head>
+<body>
+
+<h1>Quiz de la Célula</h1>
+<div id="quiz-container">
+  <div id="question-number"></div>
+  <div class="question" id="question"></div>
+  <div class="options" id="options"></div>
+  <button id="next" onclick="nextQuestion()">Siguiente</button>
+</div>
+<div id="result"></div>
+
+<script>
+const quiz = [
+  { q: "¿Qué organelo produce energía?", a: ["Ribosoma","Mitocondria","Núcleo"], correct: 1 },
+  { q: "¿Dónde ocurre la fotosíntesis?", a: ["Cloroplasto","Lisosoma","Membrana"], correct: 0 },
+  { q: "¿Qué parte controla la entrada y salida de sustancias?", a: ["Citoplasma","Membrana","Pared celular"], correct: 1 },
+  { q: "¿Qué organelo contiene el ADN?", a: ["Núcleo","Ribosoma","Golgi"], correct: 0 },
+  { q: "¿Dónde se fabrican las proteínas?", a: ["Ribosoma","Lisosoma","Mitocondria"], correct: 0 },
+  { q: "¿Qué estructura da forma rígida a la célula vegetal?", a: ["Pared celular","Membrana","Citoplasma"], correct: 0 },
+  { q: "¿Qué organelo digiere desechos?", a: ["Lisosoma","Golgi","Retículo endoplasmático"], correct: 0 },
+  { q: "¿Qué transporta y procesa proteínas y lípidos?", a: ["Retículo endoplasmático","Mitocondria","Ribosoma"], correct: 0 },
+  { q: "¿Qué modifica, empaqueta y distribuye sustancias?", a: ["Aparato de Golgi","Núcleo","Citoplasma"], correct: 0 },
+  { q: "¿Qué es la sustancia gelatinosa donde flotan los organelos?", a: ["Citoplasma","Membrana","Cloroplasto"], correct: 0 },
+];
+
+let current = 0;
+let score = 0;
+
+function showQuestion() {
+  document.getElementById('question-number').innerText = `Pregunta ${current + 1} de ${quiz.length}`;
+  document.getElementById('question').innerText = quiz[current].q;
+  const optionsDiv = document.getElementById('options');
+  optionsDiv.innerHTML = '';
+  quiz[current].a.forEach((option, i) => {
+    const btn = document.createElement('button');
+    btn.innerText = option;
+    btn.onclick = () => checkAnswer(i);
+    optionsDiv.appendChild(btn);
+  });
+}
+
+function checkAnswer(selected) {
+  if(selected === quiz[current].correct) score++;
+  nextQuestion();
+}
+
+function nextQuestion() {
+  current++;
+  if(current < quiz.length) {
+    showQuestion();
+  } else {
+    document.getElementById('quiz-container').style.display = 'none';
+    const percentage = Math.round((score / quiz.length) * 100);
+    document.getElementById('result').innerText = `¡Tu puntaje es ${percentage}%!`;
+  }
+}
+
+showQuestion();
+</script>
+
+</body>
+</html>
